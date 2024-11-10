@@ -4,6 +4,7 @@ import { CatalogItem } from "./types";
 import './App.css';
 import Loader from "./Loader";
 import CatalogItemCard from "./CatalogItem";
+import { AiIcon, ABCIcon } from "./SVGIcons";
 
 const CATALOG_URL = 'https://hook.eu2.make.com/9jtr7ztjxkoo7lvxvayckkmdlr0ck4w3';
 
@@ -100,20 +101,12 @@ const App: React.FC = () => {
           הקטנים ביותר
           ממלאים הכי הרבה
           מקום בלב"</h1>
-        <div className="input-container">
-          <input
-            type="text"
-            placeholder="חיפוש טקסט"
-            value={freeSearchText}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFreeSearchText(e.target.value)}
-          />
-        </div>
         <div className="bot-search">
           <form className="input-container" onSubmit={e => { e.preventDefault(); botSearch(); }}>
-            <div>אני רוצה לעזור לך למצוא אבן שתקלע למטרה, ספר לי עבור מה את צריך</div>
+            <div className="zoom-out" style={{ width: '20px' }}><AiIcon /></div>
+            <div>אני כאן כדי לעזור לבחור את האבן המתאימה ביותר למטרה שלך. אפשר לספר לי למה היא מיועדת, ואכוון לאבן הנכונה.</div>
             <input
               type="text"
-              placeholder="אני רוצה אבן בשביל ..."
               value={botSearchText}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBotSearchText(e.target.value)}
             />
@@ -123,8 +116,17 @@ const App: React.FC = () => {
             </button>
           </form>
         </div>
+        <div className="input-container">
+          <div style={{ width: '20px' }}><ABCIcon /></div>
+          <input
+            type="text"
+            placeholder="חיפוש לפי טקסט"
+            value={freeSearchText}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFreeSearchText(e.target.value)}
+          />
+        </div>
       </div>
-      
+
       <div className="items-container">
         <div className="catalog-grid">
           {filteredItems.map(item => (
@@ -135,7 +137,7 @@ const App: React.FC = () => {
           <div className="overlay" onClick={() => setRecommendedBotItems([])}>
             <div className="modal" onClick={(e) => e.stopPropagation()}>
               <button className="close-button" onClick={() => setRecommendedBotItems([])}>×</button>
-              <div className="recommended-items-grid">
+              <div className="recommended-items-grid scrollable-element">
                 {recommendedBotItems.map(item => (
                   <div className="recommended-container">
                     <CatalogItemCard item={item} key={item.sku} recommended />
