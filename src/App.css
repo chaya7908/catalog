@@ -153,8 +153,15 @@ input:focus {
 .catalog-item.sold-out:hover::before {
   opacity: 0;
 }
-
-/* catalog-item content */
+.catalog-item .sku {
+  position: absolute;
+  background-color: #5b3819;
+  color: white;
+  z-index: 100;
+  top: 5px;
+  left: 0;
+  padding: 2px 4px;
+}
 .catalog-item .img-container {
   flex: 1;
   position: relative;
