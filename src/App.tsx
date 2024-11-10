@@ -4,9 +4,10 @@ import { CatalogItem } from "./types";
 import './App.css';
 import Loader from "./Loader";
 import CatalogItemCard from "./CatalogItem";
-import { AiIcon, ABCIcon } from "./SVGIcons";
+import { AiIcon, ABCIcon, IdeaIcon, ContactUsIcon } from "./SVGIcons";
 
 const CATALOG_URL = 'https://hook.eu2.make.com/9jtr7ztjxkoo7lvxvayckkmdlr0ck4w3';
+const SUGGESTION_URL = 'https://hook.eu2.make.com/5oyeb3xxdzwrvwu6fjbhnprrfe3upvpd';
 
 const App: React.FC = () => {
   const [items, setItems] = useState<CatalogItem[]>([]);
@@ -38,16 +39,65 @@ const App: React.FC = () => {
       });
       const data: Partial<CatalogItem>[] = await botResponse.json();
       const recommendedItems = data
-      .filter(item => items.find(i => i.sku === item.sku))
-      .map(item => (
-        { ...item, ...(items.find(i => i.sku === item.sku)) } as CatalogItem
-      ));
+        .filter(item => items.find(i => i.sku === item.sku))
+        .map(item => (
+          { ...item, ...(items.find(i => i.sku === item.sku)) } as CatalogItem
+        ));
       setRecommendedBotItems(recommendedItems);
     } catch (e) {
     } finally {
       setBotSearchDisabled(false);
     }
   }
+
+  const [newSentence, setNewSentence] = useState<string>('');
+  const [newSentenceDisabled, setNewSentenceDisabled] = useState<boolean>(false);
+
+  const suggestSentence = async () => {
+    setNewSentenceDisabled(true);
+    try {
+      // implement bot search
+      await fetch(SUGGESTION_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: newSentence
+        })
+      });
+      setNewSentence('');
+    } catch (e) {
+    } finally {
+      setNewSentenceDisabled(false);
+    }
+  }
+
+  const [contactUsMessage, setContactUsMessage] = useState<string>('');
+  const [contactUsEmail, setContactUsEmail] = useState<string>('');
+  const [contactUsDisabled, setContactUsDisabled] = useState<boolean>(false);
+  const contactUs = async () => {
+    setContactUsDisabled(true);
+    try {
+      // implement bot search
+      await fetch(SUGGESTION_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: contactUsMessage,
+          email: contactUsEmail
+        })
+      });
+      setContactUsMessage('');
+      setContactUsEmail('');
+    } catch (e) {
+    } finally {
+      setContactUsDisabled(false);
+    }
+  }
+
 
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -98,60 +148,102 @@ const App: React.FC = () => {
 
   return (
     <div className="app-main-container">
-      <div className="header">
+      <header>
+        <img src="/catalog/bg.JPG" />
         <h1>"לפעמים הדברים
           הקטנים ביותר
           ממלאים הכי הרבה
           מקום בלב"</h1>
-        <div className="bot-search">
-          <form className="input-container" onSubmit={e => { e.preventDefault(); botSearch(); }}>
-            <div className="zoom-out" style={{ width: '20px' }}><AiIcon /></div>
-            <div>אני כאן כדי לעזור לבחור את האבן המתאימה ביותר למטרה שלך. אפשר לספר לי למה היא מיועדת, ואכוון לאבן הנכונה.</div>
-            <input
-              type="text"
-              value={botSearchText}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBotSearchText(e.target.value)}
-            />
-            <button type="submit" disabled={!botSearchText || botSearchDisabled} onClick={botSearch}><>
-              {botSearchDisabled ? <Loader /> : 'חפש'}
-            </>
-            </button>
-          </form>
+      </header>
+      <div className="catalog">
+        <div className="side-element">
+          <div className="sticky-element">
+            <form className="input-container" onSubmit={e => { e.preventDefault(); botSearch(); }}>
+              <div className="zoom-out" style={{ width: '20px' }}><AiIcon /></div>
+              <div>אני כאן כדי לעזור לבחור את האבן המתאימה ביותר למטרה שלך. אפשר לספר לי למה היא מיועדת, ואכוון לאבן הנכונה.</div>
+              <input
+                type="text"
+                value={botSearchText}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBotSearchText(e.target.value)}
+              />
+              <button type="submit" disabled={!botSearchText || botSearchDisabled} onClick={botSearch}><>
+                {botSearchDisabled ? <Loader /> : 'חפש'}
+              </>
+              </button>
+            </form>
+            <div className="input-container">
+              <div style={{ width: '20px' }}><ABCIcon /></div>
+              <input
+                type="text"
+                placeholder="חיפוש לפי טקסט"
+                value={freeSearchText}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFreeSearchText(e.target.value)}
+              />
+            </div>
+            <form className="input-container" onSubmit={e => { e.preventDefault(); suggestSentence(); }}>
+              <div className="swing" style={{ width: '20px' }}><IdeaIcon /></div>
+              <div>תרצו להציע משפט מעצים שעוד לא קיים במאגר? נשמח לשמוע :)</div>
+              <input
+                type="text"
+                value={newSentence}
+                required
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewSentence(e.target.value)}
+              />
+              <button type="submit" disabled={!newSentence || newSentenceDisabled} onClick={suggestSentence}><>
+                {newSentenceDisabled ? <Loader /> : 'שלח'}
+              </>
+              </button>
+            </form>
+            <form className="input-container" onSubmit={e => { e.preventDefault(); contactUs(); }}>
+              <div style={{ width: '20px' }}><ContactUsIcon /></div>
+              <div>נהיה בקשר</div>
+              <input
+                type="text"
+                placeholder="רציתי לומר ש -"
+                required
+                value={contactUsMessage}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setContactUsMessage(e.target.value)}
+              />
+              <input
+                type="email"
+                placeholder="כתובת מייל"
+                required
+                value={contactUsEmail}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setContactUsEmail(e.target.value)}
+              />
+              <button type="submit" disabled={!contactUsEmail || !contactUsMessage || contactUsDisabled} onClick={contactUs}><>
+                {contactUsDisabled ? <Loader /> : 'שלח'}
+              </>
+              </button>
+            </form>
+          </div>
         </div>
-        <div className="input-container">
-          <div style={{ width: '20px' }}><ABCIcon /></div>
-          <input
-            type="text"
-            placeholder="חיפוש לפי טקסט"
-            value={freeSearchText}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFreeSearchText(e.target.value)}
-          />
+
+        <div className="items-container">
+          <div className="catalog-grid">
+            {filteredItems.map(item => (
+              <CatalogItemCard item={item} key={item.sku} />
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="items-container">
-        <div className="catalog-grid">
-          {filteredItems.map(item => (
-            <CatalogItemCard item={item} key={item.sku} />
-          ))}
-        </div>
-        {recommendedBotItems.length > 0 && <>
-          <div className="overlay" onClick={() => setRecommendedBotItems([])}>
-            <div className="modal" onClick={(e) => e.stopPropagation()}>
-              <button className="close-button" onClick={() => setRecommendedBotItems([])}>×</button>
-              <div className="recommended-items-grid scrollable-element">
-                {recommendedBotItems.map(item => (
-                  <div className="recommended-container">
-                    <CatalogItemCard item={item} key={item.sku} recommended />
-                    <div className="recomendation-text">{item.reasonForMatch}</div>
-                  </div>
-                ))}
+      {recommendedBotItems.length > 0 && <>
+            <div className="overlay" onClick={() => setRecommendedBotItems([])}>
+              <div className="modal" onClick={(e) => e.stopPropagation()}>
+                <button className="close-button" onClick={() => setRecommendedBotItems([])}>×</button>
+                <div className="recommended-items-grid scrollable-element">
+                  {recommendedBotItems.map(item => (
+                    <div className="recommended-container">
+                      <CatalogItemCard item={item} key={item.sku} recommended />
+                      <div className="recomendation-text">{item.reasonForMatch}</div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-        </>
-        }
-      </div>
+          </>
+          }
     </div>
   );
 };

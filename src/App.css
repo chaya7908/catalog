@@ -1,14 +1,45 @@
 /* src/App.css */
 .app-main-container {
-  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  font-family: monospace;
+  direction: rtl;
+}
+
+/* header */
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 0;
+  border-bottom: 2px solid #5b3819;
+}
+header img {
+  position: absolute;
+  z-index: -1;
   width: 100vw;
-  overflow: hidden;
+  bottom: 0;
+  top: 0;
+  opacity: 0.5;
+}
+header h1 {
+  margin: 0;
+  color: #5b3819;
+  font-weight: 600;
+  font-size: 40px;
+  font-style: oblique;
+  margin-bottom: auto;
+  background-color: #c2b19d;
+}
+
+.catalog {
+  width: 100vw;
   background-color: #c2b19d;
   display: flex;
   gap: 20px;
   flex-direction: row;
-  font-family: monospace;
-  direction: rtl;
+  position: relative;
 }
 
 /* side container */
@@ -16,27 +47,20 @@ input {
   padding: 8px;
   margin-bottom: 10px;
 }
-.header {
-  position: fixed;
-  top: 0;
-  bottom: 0;
+.side-element {
   flex: 1;
   width: 20%;
   padding: 20px;
+  /* position: relative; */
+}
+.sticky-element {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   gap: 20px;
+  position: sticky;
+  top: 20px;
 }
-.header h1 {
-  margin: 0;
-  color: #5b3819;
-  font-weight: 600;
-  font-size: 36px;
-  font-style: oblique;
-  margin-bottom: auto;
-}
-.header input {
+input {
   border-radius: 5px;
   outline: none;
   border: 1px solid #5b3819;
@@ -45,10 +69,10 @@ input {
   margin-bottom: 0;
   flex: 1;
 }
-.header input:focus {
+input:focus {
   outline: none;
 }
-.header .input-container {
+.input-container {
   display: flex;
   gap: 7px;
   flex-direction: column;
@@ -57,7 +81,7 @@ input {
   border-radius: 5px;
   font-size: 18px;
 }
-.header .input-container button {
+.input-container button {
   flex: 1;
   background: #5b3819;
   color: white;
@@ -68,21 +92,17 @@ input {
   padding: 5px;
   min-height: 30px;
 }
-.header .input-container button:disabled {
+.input-container button:disabled {
   background-color: gray;
   pointer-events: none;
 }
-.header .input-container button:hover {
+.input-container button:hover {
   opacity: 1;
 }
-
 .items-container {
-  margin-right: calc(20% + 30px);
   width: calc(80% - 30px);
   display: flex;
-  position: relative;
 }
-
 .catalog-grid {
   padding: 20px;
   display: grid;
@@ -171,6 +191,8 @@ input {
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  position: fixed;
+  top: 0;
 }
 .close-button {
   position: absolute;
@@ -185,7 +207,6 @@ input {
 .modal {
   background-color: #fff;
   padding: 20px;
-  width: 80%;
   max-width: 90%;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -209,12 +230,14 @@ input {
 .recommended-container .catalog-item {
   flex: 1;
   max-width: 150px;
+  max-height: 250px;
 }
 .recommended-container .recomendation-text {
   flex: 1;
   font-size: 20px;
   color: green;
   font-weight: bold;
+  max-width: 600px;
 }
 
 
@@ -261,6 +284,20 @@ input {
   100% { transform: scale(0.8) }
   50% { transform: scale(1.2) }
 }
+.swing {
+  animation: swing 4s infinite;
+  animation-delay: var(--random-delay);
+}
+
+@keyframes swing {
+  0% { transform: rotate(0deg) }
+  15% { transform: rotate(-15deg) }
+  30% { transform: rotate(0deg) }
+  45% { transform: rotate(15deg) }
+  60% { transform: rotate(0deg) }
+  100% { transform: rotate(0deg) }
+}
+
 
 /* SCROLL */
 /* Target elements with scroll */
