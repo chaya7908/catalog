@@ -37,7 +37,9 @@ const App: React.FC = () => {
         })
       });
       const data: Partial<CatalogItem>[] = await botResponse.json();
-      const recommendedItems = data.map(item => (
+      const recommendedItems = data
+      .filter(item => items.find(i => i.sku === item.sku))
+      .map(item => (
         { ...item, ...(items.find(i => i.sku === item.sku)) } as CatalogItem
       ));
       setRecommendedBotItems(recommendedItems);
