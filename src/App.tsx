@@ -13,6 +13,35 @@ const App: React.FC = () => {
   const [items, setItems] = useState<CatalogItem[]>([]);
   const [recommendedBotItems, setRecommendedBotItems] = useState<CatalogItem[]>([]);
 
+  const fetchItems = async (force = false) => {
+    const items = localStorage.getItem('items');
+    const lastFetch = localStorage.getItem('lastFetch');
+    const now = Date.now();
+
+    // Check if 24 hours have passed since the last fetch
+    if (!force && items && lastFetch && now - parseInt(lastFetch, 10) < 24 * 60 * 60 * 1000) {
+      setItems(JSON.parse(items));
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch(CATALOG_URL);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data: CatalogItem[] = await response.json();
+      localStorage.setItem('items', JSON.stringify(data));
+      localStorage.setItem('lastFetch', now.toString());
+      setBrokenItems(0);
+      setItems(data);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // free search
   const [freeSearchText, setFreeSearchText] = useState<string>('');
   const [debouncedFreeSearchText, setDebouncedFreeSearchText] = useState(freeSearchText);
@@ -50,9 +79,9 @@ const App: React.FC = () => {
     }
   }
 
+  // suggestion
   const [newSentence, setNewSentence] = useState<string>('');
   const [newSentenceDisabled, setNewSentenceDisabled] = useState<boolean>(false);
-
   const suggestSentence = async () => {
     setNewSentenceDisabled(true);
     try {
@@ -73,6 +102,7 @@ const App: React.FC = () => {
     }
   }
 
+  // contact us
   const [contactUsMessage, setContactUsMessage] = useState<string>('');
   const [contactUsEmail, setContactUsEmail] = useState<string>('');
   const [contactUsDisabled, setContactUsDisabled] = useState<boolean>(false);
@@ -98,39 +128,19 @@ const App: React.FC = () => {
     }
   }
 
+  const [brokenItems, setBrokenItems] = useState<number>(0);
+  useEffect(() => {
+    console.log(brokenItems, items.length);
+    if (brokenItems > items.length / 2) {
+      fetchItems(true);
+    }
+  }, [brokenItems, items]);
+
 
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchItems = async () => {
-      const items = localStorage.getItem('items');
-      const lastFetch = localStorage.getItem('lastFetch');
-      const now = Date.now();
-
-      // Check if 24 hours have passed since the last fetch
-      if (items && lastFetch && now - parseInt(lastFetch, 10) < 24 * 60 * 60 * 1000) {
-        setItems(JSON.parse(items));
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const response = await fetch(CATALOG_URL);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data: CatalogItem[] = await response.json();
-        localStorage.setItem('items', JSON.stringify(data));
-        localStorage.setItem('lastFetch', now.toString());
-        setItems(data);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchItems();
   }, []);
 
@@ -222,7 +232,9 @@ const App: React.FC = () => {
         <div className="items-container">
           <div className="catalog-grid">
             {filteredItems.map(item => (
-              <CatalogItemCard item={item} key={item.sku} />
+              <CatalogItemCard item={item} key={item.sku} onLoadError={() => {
+                setBrokenItems((prevCount) => prevCount + 1);
+              }} />
             ))}
           </div>
         </div>
