@@ -60,6 +60,11 @@ input {
   position: sticky;
   top: 20px;
 }
+.icon-container {
+  width: 20px;
+  position: absolute;
+  margin: -25px -25px 0 0;
+}
 input {
   border-radius: 5px;
   outline: none;

@@ -159,7 +159,7 @@ const App: React.FC = () => {
         <div className="side-element">
           <div className="sticky-element">
             <form className="input-container" onSubmit={e => { e.preventDefault(); botSearch(); }}>
-              <div className="zoom-out" style={{ width: '20px' }}><AiIcon /></div>
+              <div className="icon-container zoom-out"><AiIcon /></div>
               <div>אני כאן כדי לעזור לבחור את האבן המתאימה ביותר למטרה שלך. אפשר לספר לי למה היא מיועדת, ואכוון לאבן הנכונה.</div>
               <input
                 type="text"
@@ -172,7 +172,7 @@ const App: React.FC = () => {
               </button>
             </form>
             <div className="input-container">
-              <div style={{ width: '20px' }}><ABCIcon /></div>
+              <div className="icon-container"><ABCIcon /></div>
               <input
                 type="text"
                 placeholder="חיפוש לפי טקסט"
@@ -181,7 +181,7 @@ const App: React.FC = () => {
               />
             </div>
             <form className="input-container" onSubmit={e => { e.preventDefault(); suggestSentence(); }}>
-              <div className="swing" style={{ width: '20px' }}><IdeaIcon /></div>
+              <div className="icon-container swing"><IdeaIcon /></div>
               <div>תרצו להציע משפט מעצים שעוד לא קיים במאגר? נשמח לשמוע :)</div>
               <input
                 type="text"
@@ -195,7 +195,7 @@ const App: React.FC = () => {
               </button>
             </form>
             <form className="input-container" onSubmit={e => { e.preventDefault(); contactUs(); }}>
-              <div style={{ width: '20px' }}><ContactUsIcon /></div>
+              <div className="icon-container"><ContactUsIcon /></div>
               <div>נהיה בקשר</div>
               <input
                 type="text"
