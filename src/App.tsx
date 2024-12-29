@@ -26,7 +26,15 @@ const App: React.FC = () => {
     }
 
     try {
-      const response = await fetch(CATALOG_URL);
+      const response = await fetch(CATALOG_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          requestId: 'get-items',
+        })
+      });
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -63,6 +71,7 @@ const App: React.FC = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+          requestId: 'bot-search',
           message: botSearchText
         })
       });
@@ -92,6 +101,7 @@ const App: React.FC = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+          requestId: 'suggest-sentence',
           message: newSentence
         })
       });
@@ -116,6 +126,7 @@ const App: React.FC = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+          requestId: 'suggest-sentence',
           message: contactUsMessage,
           email: contactUsEmail
         })
