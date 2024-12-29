@@ -161,7 +161,7 @@ input:focus {
 
 .catalog-item .new-item {
   position: absolute;
-  z-index: 9999999;
+  z-index: 100;
   padding: 5px 10px;
   background: #ff7474;
   border-radius: 0 0 0 10px;
