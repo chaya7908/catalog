@@ -5,6 +5,7 @@ import './App.css';
 import Loader from "./Loader";
 import CatalogItemCard from "./CatalogItem";
 import { AiIcon, ABCIcon, IdeaIcon, ContactUsIcon } from "./SVGIcons";
+import { ToastContainer, toast } from "react-toastify";
 
 const CATALOG_URL = 'https://hook.eu2.make.com/9jtr7ztjxkoo7lvxvayckkmdlr0ck4w3';
 const SUGGESTION_URL = 'https://hook.eu2.make.com/xv3d8l9gpki7b8tonn4gjkvfl5qp0sqd';
@@ -105,6 +106,8 @@ const App: React.FC = () => {
           message: newSentence
         })
       });
+
+      toast.success('תודה שכתבת לנו!');
       setNewSentence('');
     } catch (e) {
     } finally {
@@ -131,6 +134,8 @@ const App: React.FC = () => {
           email: contactUsEmail
         })
       });
+      toast.success('פנייתך התקבלה, נחזור אליך בהקדם');
+
       setContactUsMessage('');
       setContactUsEmail('');
     } catch (e) {
@@ -156,9 +161,9 @@ const App: React.FC = () => {
   }, []);
 
   const filteredItems = items
-  .filter(item =>
-    item.text.toLowerCase().includes(debouncedFreeSearchText.toLowerCase())
-  ).sort((a, b) => Number(b.sku) - Number(a.sku));
+    .filter(item =>
+      item.text.toLowerCase().includes(debouncedFreeSearchText.toLowerCase())
+    ).sort((a, b) => Number(b.sku) - Number(a.sku));
 
   if (loading) {
     return <div>Loading...</div>;
@@ -253,21 +258,23 @@ const App: React.FC = () => {
       </div>
 
       {recommendedBotItems.length > 0 && <>
-            <div className="overlay" onClick={() => setRecommendedBotItems([])}>
-              <div className="modal" onClick={(e) => e.stopPropagation()}>
-                <button className="close-button" onClick={() => setRecommendedBotItems([])}>×</button>
-                <div className="recommended-items-grid scrollable-element">
-                  {recommendedBotItems.map(item => (
-                    <div className="recommended-container">
-                      <CatalogItemCard item={item} key={item.sku} recommended />
-                      <div className="recomendation-text">{item.reasonForMatch}</div>
-                    </div>
-                  ))}
+        <div className="overlay" onClick={() => setRecommendedBotItems([])}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <button className="close-button" onClick={() => setRecommendedBotItems([])}>×</button>
+            <div className="recommended-items-grid scrollable-element">
+              {recommendedBotItems.map(item => (
+                <div className="recommended-container">
+                  <CatalogItemCard item={item} key={item.sku} recommended />
+                  <div className="recomendation-text">{item.reasonForMatch}</div>
                 </div>
-              </div>
+              ))}
             </div>
-          </>
-          }
+          </div>
+        </div>
+      </>
+      }
+
+      <ToastContainer />
     </div>
   );
 };
