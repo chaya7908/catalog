@@ -7,7 +7,7 @@ import CatalogItemCard from "./CatalogItem";
 import { AiIcon, ABCIcon, IdeaIcon, ContactUsIcon } from "./SVGIcons";
 
 const CATALOG_URL = 'https://hook.eu2.make.com/9jtr7ztjxkoo7lvxvayckkmdlr0ck4w3';
-const SUGGESTION_URL = 'https://hook.eu2.make.com/5oyeb3xxdzwrvwu6fjbhnprrfe3upvpd';
+const SUGGESTION_URL = 'https://hook.eu2.make.com/xv3d8l9gpki7b8tonn4gjkvfl5qp0sqd';
 
 const App: React.FC = () => {
   const [items, setItems] = useState<CatalogItem[]>([]);
@@ -126,7 +126,7 @@ const App: React.FC = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          requestId: 'suggest-sentence',
+          requestId: 'contact-us',
           message: contactUsMessage,
           email: contactUsEmail
         })
