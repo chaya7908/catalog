@@ -5,4 +5,5 @@ export interface CatalogItem {
   imgUrl: string;
   isSoldOut: boolean;
   reasonForMatch?: string;
+  createdAt: string;
 }

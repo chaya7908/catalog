@@ -158,6 +158,16 @@ input:focus {
 .catalog-item.sold-out:hover::before {
   opacity: 0;
 }
+
+.catalog-item .new-item {
+  position: absolute;
+  z-index: 9999999;
+  padding: 5px 10px;
+  background: #ff7474;
+  border-radius: 0 0 0 10px;
+  color: white;
+}
+
 .catalog-item .sku {
   position: absolute;
   background-color: #5b3819;

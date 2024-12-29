@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { CatalogItem } from "./types";
 
 const CatalogItemCard: React.FC<{ item: CatalogItem; recommended?: boolean; onLoadError?: () => void }> = ({ item, recommended, onLoadError }) => {
@@ -14,9 +15,18 @@ const CatalogItemCard: React.FC<{ item: CatalogItem; recommended?: boolean; onLo
       });
   };
 
+  const isNew = useMemo(() => {
+    const fiveDaysAgo = new Date();
+    fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
+
+    const createdAtDate = new Date(item.createdAt);
+    return createdAtDate >= fiveDaysAgo;
+  }, [item]);
+
   return (
     <div className={`catalog-item ${item.isSoldOut ? 'sold-out' : ''} ${recommended ? 'recommended' : ''}`} key={item.sku}>
       <span className="sku">#{item.sku}</span>
+      {isNew && <span className="new-item">NEW</span>}
       <div className="img-container">
         <img src={item.imgUrl} alt={item.text} width="150" height="150" onError={handleImageError}  />
       </div>

@@ -155,9 +155,10 @@ const App: React.FC = () => {
     fetchItems();
   }, []);
 
-  const filteredItems = items.filter(item =>
+  const filteredItems = items
+  .filter(item =>
     item.text.toLowerCase().includes(debouncedFreeSearchText.toLowerCase())
-  );
+  ).sort((a, b) => Number(b.sku) - Number(a.sku));
 
   if (loading) {
     return <div>Loading...</div>;
