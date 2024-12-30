@@ -6,6 +6,7 @@ import Loader from "./Loader";
 import CatalogItemCard from "./CatalogItem";
 import { AiIcon, ABCIcon, IdeaIcon, ContactUsIcon } from "./SVGIcons";
 import { ToastContainer, toast } from "react-toastify";
+import MenuAction from "./MenuAction";
 
 const CATALOG_URL = 'https://hook.eu2.make.com/9jtr7ztjxkoo7lvxvayckkmdlr0ck4w3';
 const SUGGESTION_URL = 'https://hook.eu2.make.com/xv3d8l9gpki7b8tonn4gjkvfl5qp0sqd';
@@ -13,6 +14,7 @@ const SUGGESTION_URL = 'https://hook.eu2.make.com/xv3d8l9gpki7b8tonn4gjkvfl5qp0s
 const App: React.FC = () => {
   const [items, setItems] = useState<CatalogItem[]>([]);
   const [recommendedBotItems, setRecommendedBotItems] = useState<CatalogItem[]>([]);
+  const [activeAction, setActiveAction] = useState<'search' | 'bot-search' | 'suggest-sentence' | 'contact-us'>('bot-search');
 
   const fetchItems = async (force = false) => {
     const items = localStorage.getItem('items');
@@ -185,64 +187,82 @@ const App: React.FC = () => {
       <div className="catalog">
         <div className="side-element">
           <div className="sticky-element">
-            <form className="input-container" onSubmit={e => { e.preventDefault(); botSearch(); }}>
-              <div className="icon-container zoom-out"><AiIcon /></div>
-              <div>אני כאן כדי לעזור לבחור את האבן המתאימה ביותר למטרה שלך. אפשר לספר לי למה היא מיועדת, ואכוון לאבן הנכונה.</div>
-              <input
-                type="text"
-                value={botSearchText}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBotSearchText(e.target.value)}
-              />
-              <button type="submit" disabled={!botSearchText || botSearchDisabled} onClick={botSearch}><>
-                {botSearchDisabled ? <Loader /> : 'חפש'}
-              </>
-              </button>
-            </form>
-            <div className="input-container">
-              <div className="icon-container"><ABCIcon /></div>
-              <input
-                type="text"
-                placeholder="חיפוש לפי טקסט"
-                value={freeSearchText}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFreeSearchText(e.target.value)}
-              />
-            </div>
-            <form className="input-container" onSubmit={e => { e.preventDefault(); suggestSentence(); }}>
-              <div className="icon-container swing"><IdeaIcon /></div>
-              <div>תרצו להציע משפט מעצים שעוד לא קיים במאגר? נשמח לשמוע :)</div>
-              <input
-                type="text"
-                value={newSentence}
-                required
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewSentence(e.target.value)}
-              />
-              <button type="submit" disabled={!newSentence || newSentenceDisabled} onClick={suggestSentence}><>
-                {newSentenceDisabled ? <Loader /> : 'שלח'}
-              </>
-              </button>
-            </form>
-            <form className="input-container" onSubmit={e => { e.preventDefault(); contactUs(); }}>
-              <div className="icon-container"><ContactUsIcon /></div>
-              <div>נהיה בקשר</div>
-              <input
-                type="text"
-                placeholder="רציתי לומר ש -"
-                required
-                value={contactUsMessage}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setContactUsMessage(e.target.value)}
-              />
-              <input
-                type="email"
-                placeholder="כתובת מייל"
-                required
-                value={contactUsEmail}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setContactUsEmail(e.target.value)}
-              />
-              <button type="submit" disabled={!contactUsEmail || !contactUsMessage || contactUsDisabled} onClick={contactUs}><>
-                {contactUsDisabled ? <Loader /> : 'שלח'}
-              </>
-              </button>
-            </form>
+            <MenuAction
+              onClick={() => setActiveAction('bot-search')}
+              isActive={activeAction === 'bot-search'}
+              text="חיפוש חכם" icon={<AiIcon />}
+              component={<form className="input-container" onSubmit={e => { e.preventDefault(); botSearch(); }}>
+                <div>אני כאן כדי לעזור לבחור את האבן המתאימה ביותר למטרה שלך. אפשר לספר לי למה היא מיועדת, ואכוון לאבן הנכונה.</div>
+                <input
+                  type="text"
+                  value={botSearchText}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBotSearchText(e.target.value)}
+                />
+                <button type="submit" disabled={!botSearchText || botSearchDisabled} onClick={botSearch}><>
+                  {botSearchDisabled ? <Loader /> : 'חפש'}
+                </>
+                </button>
+              </form>} />
+            <MenuAction
+              onClick={() => setActiveAction('search')}
+              isActive={activeAction === 'search'}
+              text="חיפוש חופשי" icon={<ABCIcon />}
+              component={
+                <div className="input-container">
+                  <input
+                    type="text"
+                    placeholder="חיפוש לפי טקסט"
+                    value={freeSearchText}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFreeSearchText(e.target.value)}
+                  />
+                </div>
+              } />
+            <MenuAction
+              onClick={() => setActiveAction('suggest-sentence')}
+              isActive={activeAction === 'suggest-sentence'}
+              text="הצעת משפט" icon={<IdeaIcon />}
+              component={
+                <form className="input-container" onSubmit={e => { e.preventDefault(); suggestSentence(); }}>
+                  <div>תרצו להציע משפט מעצים שעוד לא קיים במאגר? נשמח לשמוע :)</div>
+                  <input
+                    type="text"
+                    value={newSentence}
+                    required
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewSentence(e.target.value)}
+                  />
+                  <button type="submit" disabled={!newSentence || newSentenceDisabled} onClick={suggestSentence}><>
+                    {newSentenceDisabled ? <Loader /> : 'שלח'}
+                  </>
+                  </button>
+                </form>
+              } />
+            <MenuAction
+              onClick={() => setActiveAction('contact-us')}
+              isActive={activeAction === 'contact-us'}
+              text="צור קשר" icon={<ContactUsIcon />}
+              component={
+                <form className="input-container" onSubmit={e => { e.preventDefault(); contactUs(); }}>
+                  <div>נהיה בקשר</div>
+                  <input
+                    type="text"
+                    placeholder="רציתי לומר ש -"
+                    required
+                    value={contactUsMessage}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setContactUsMessage(e.target.value)}
+                  />
+                  <input
+                    type="email"
+                    placeholder="כתובת מייל"
+                    required
+                    value={contactUsEmail}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setContactUsEmail(e.target.value)}
+                  />
+                  <button type="submit" disabled={!contactUsEmail || !contactUsMessage || contactUsDisabled} onClick={contactUs}><>
+                    {contactUsDisabled ? <Loader /> : 'שלח'}
+                  </>
+                  </button>
+                </form>
+              } />
           </div>
         </div>
 

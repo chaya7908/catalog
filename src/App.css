@@ -50,13 +50,12 @@ input {
 .side-element {
   flex: 1;
   width: 20%;
-  padding: 20px;
-  /* position: relative; */
+  padding: 20px 0;
 }
 .sticky-element {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
   position: sticky;
   top: 20px;
 }
@@ -83,8 +82,9 @@ input:focus {
   flex-direction: column;
   padding: 15px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 15px 0 0 15px;
   font-size: 18px;
+  border-right: none;
 }
 .input-container button {
   flex: 1;
@@ -297,14 +297,14 @@ input:focus {
 }
 
 .zoom-out {
-  animation: zoomOut 2s infinite;
+  animation: zoomOut 4s infinite;
   animation-delay: var(--random-delay);
 }
 
 @keyframes zoomOut {
   0% { transform: scale(0.8) }
   100% { transform: scale(0.8) }
-  50% { transform: scale(1.2) }
+  50% { transform: scale(1.1) }
 }
 .swing {
   animation: swing 4s infinite;
@@ -343,4 +343,75 @@ input:focus {
 
 .scrollable-element::-webkit-scrollbar-track {
   background-color: #f1f1f1; /* Track color */
+}
+
+.action-item-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+  /* padding: 10px; */
+  /* position: sticky; */
+  /* top: 0; */
+  /* z-index: 100; */
+  /* background-color: #c2b19d; */
+}
+
+.action-item {
+  border: 1px solid #5b3819;
+  border-radius: 50px 0 0 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  cursor: pointer;
+  color: #5b3819;
+  font-size: 16px;
+  font-weight: 900;
+
+  overflow: hidden;
+  transition: width 0.3s ease;
+  width: 40px;
+  height: 50px;
+  white-space: nowrap;
+  border-right: none;
+}
+
+.action-item .icon {
+  height: 70%;
+  cursor: pointer;
+}
+.action-item .text {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  width: 0;
+}
+
+.action-item-container .component-container {
+  max-height: 0; /* מתחיל סגור */
+  overflow: hidden; /* מסתיר תוכן מעבר ל-max-height */
+  transition: max-height 1s ease; /* אנימציה על max-height */
+}
+.action-item-container.active .component-container {
+  max-height: 500px; /* מספיק גובה כדי להציג את התוכן */
+}
+
+.action-item svg {
+  fill: #5b3819;
+}
+
+.action-item:hover, .action-item.active {
+  border-color: #ccc;
+  color: #ccc;
+  background-color: #5b3819;
+  width: 200px; /* פתיחת הפריט בעת ריחוף */
+
+}
+.action-item:hover svg, .action-item.active svg {
+  fill: #ccc;
+}
+.action-item:hover .text, .action-item.active .text {
+  opacity: 1;
+  width: auto;
 }
