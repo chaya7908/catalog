@@ -28,7 +28,7 @@ const CatalogItemCard: React.FC<{ item: CatalogItem; recommended?: boolean; onLo
       <span className="sku">#{item.sku}</span>
       {isNew && <span className="new-item">NEW</span>}
       <div className="img-container">
-        <img src={item.imgUrl} alt={item.text} width="150" height="150" onError={handleImageError}  />
+        <img src={item.imgUrl} alt={item.text} width="150" height="150" onError={handleImageError} loading="lazy" />
       </div>
       <div className="text-container">
         <span>{item.text}</span>

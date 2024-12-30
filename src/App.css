@@ -132,6 +132,7 @@ input:focus {
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
+  transition: all 0.3s;
 }
 .catalog-item:hover:not(.recommended) {
   transform: scale(1.05);
