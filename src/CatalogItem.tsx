@@ -17,7 +17,7 @@ const CatalogItemCard: React.FC<{ item: CatalogItem; recommended?: boolean; onLo
 
   const isNew = useMemo(() => {
     const fiveDaysAgo = new Date();
-    fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
+    fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 15);
 
     const createdAtDate = new Date(item.createdAt);
     return createdAtDate >= fiveDaysAgo;
