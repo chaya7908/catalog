@@ -182,7 +182,7 @@ const App: React.FC = () => {
         <h1>"לפעמים הדברים
           הקטנים ביותר
           ממלאים הכי הרבה
-          מקום בלב"</h1>
+          מקום בלב ❣️"</h1>
       </header>
       <div className="catalog">
         <div className="side-element">
