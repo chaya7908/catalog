@@ -178,7 +178,7 @@ const App: React.FC = () => {
   return (
     <div className="app-main-container">
       <header>
-        <img src="/catalog/bg.JPG" />
+        <img src="/catalog/bg.JPG" alt="backgound" />
         <h1>"לפעמים הדברים
           הקטנים ביותר
           ממלאים הכי הרבה
