@@ -8,8 +8,8 @@ import { AiIcon, ABCIcon, IdeaIcon, ContactUsIcon } from "./SVGIcons";
 import { ToastContainer, toast } from "react-toastify";
 import MenuAction from "./MenuAction";
 
-const CATALOG_URL = 'https://hook.eu2.make.com/9jtr7ztjxkoo7lvxvayckkmdlr0ck4w3';
-const SUGGESTION_URL = 'https://hook.eu2.make.com/xv3d8l9gpki7b8tonn4gjkvfl5qp0sqd';
+const CATALOG_URL = 'https://hook.eu2.make.com/jkjm3zo6boa0cjvs8mqnf877ylg7n4ox';
+const SUGGESTION_URL = 'https://hook.eu2.make.com/7rw623qg1q8ylg4xbp2siq27io2qdy4e';
 
 const App: React.FC = () => {
   const [items, setItems] = useState<CatalogItem[]>([]);
