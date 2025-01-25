@@ -3,7 +3,7 @@ name: Deploy on Push to Main
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   deploy:
@@ -17,6 +17,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
 
       - name: Install dependencies
         run: npm install
